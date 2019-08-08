@@ -28,3 +28,6 @@ private:
 ```
 
 以上使用了两个不同的OVERLAPPED对象，创建两个的目的主要解决，同时提交收发事件时无法通过session对象的 enum dwIOType{ IO_RECV, IO_SEND}类型，判断是否为接收或发送事件。
+
+### 后续
+基于此server 实现https server
