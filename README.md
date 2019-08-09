@@ -1,7 +1,7 @@
 ## win_iocp_server
 windows iocp实现的tcp server，基于C++ 03标准，使用vs2008开发，使用了tr1库中的shared_ptr、bind和function。
 
-本工程，主要演示了TCP server创建服务，接受请求，出发回调，及收发数据的处理。
+本工程，主要演示了TCP server创建服务，接受请求，触发回调，及收发数据的处理。
 主要解决了，socket全双工时，能够根据OVERLAPPED指针，判断出是是收数据事件还是发数据事件，并且能够找到对应的session对象。
 
 ### 核心技术
