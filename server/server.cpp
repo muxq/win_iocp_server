@@ -11,6 +11,8 @@
 #include <process.h>
 #include <sstream>
 
+void *io_context::param() { return parent()->param(); }
+void io_context::param(void *param) { parent()->param(param); }
 server::server(const std::string &local_address,
                const unsigned short local_port, cb_accept_func cb_a,
                cb_io_func cb_r, cb_io_func cb_w)

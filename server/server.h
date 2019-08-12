@@ -42,6 +42,9 @@ public:
   unsigned char *data() { return &buf_[0]; }
   int size() { return buf_.size(); }
 
+  void *param();
+  void param(void *param);
+
 private:
   WSABUF w_buf_;
   session *parent_;
@@ -50,7 +53,7 @@ private:
 
 class session : public std::tr1::enable_shared_from_this<session> {
 public:
-  session() : st_(INVALID_SOCKET), send_len_(0), recv_len_(0) {
+  session() : st_(INVALID_SOCKET), send_len_(0), recv_len_(0), param_(NULL) {
     for (int n = RECV_CONTEXT; n <= SEND_CONTEXT; n++) {
       array_ctx_[n] = new io_context(this);
     }
@@ -75,6 +78,8 @@ public:
     if (len > 0)
       send_len_ += len;
   }
+  void *param() { return param_; }
+  void param(void *param) { param_ = param; }
   io_context *recv_context() { return array_ctx_[RECV_CONTEXT]; }
   io_context *send_context() { return array_ctx_[SEND_CONTEXT]; }
   const io_context *recv_context() const { return array_ctx_[RECV_CONTEXT]; }
@@ -85,6 +90,7 @@ private:
   long send_len_;
   long recv_len_;
   io_context *array_ctx_[2];
+  void *param_;
 };
 
 class server : public std::tr1::enable_shared_from_this<server> {
@@ -101,11 +107,13 @@ public:
   void post_accept();
   void post_recv(io_context *ctx);
   void post_send(io_context *ctx, unsigned char *data, const int len);
+
 private:
   void init_net_func(SOCKET s);
   void on_recv(io_context *ctx, const int len);
   void on_send(io_context *ctx, const int len);
   void on_accept(io_context *ctx, const int len);
+
 private:
   server(const server &);
   server &operator=(const server &);
